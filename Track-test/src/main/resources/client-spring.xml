@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="client-rpc.properties"/>
+
+    <!--配置服务发现-->
+    <bean name="serviceDiscovery" class="com.track.client.discover.ZkServiceDiscovery">
+        <constructor-arg name="registryAddress" value="${registry.address}"/>
+    </bean>
+
+    <!--配置rpc代理-->
+    <bean name="rpcProxy" class="com.track.client.proxy.RpcProxy">
+        <constructor-arg name="serviceDiscovery" ref="serviceDiscovery"/>
+    </bean>
+
+    <bean name="autoInject" class="com.track.client.inject.RpcAutoInject"/>
+
+    <!--<bean name="myInjectBeanPostProcessor" class="com.spring.inject.MyInjectBeanPostProcessor"/>-->
+
+</beans>
